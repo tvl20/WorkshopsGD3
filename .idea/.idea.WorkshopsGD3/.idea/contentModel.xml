@@ -6,6 +6,8 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="PlayerInput.cs" t="Include" />
+        <e p="PlayerMovement.cs" t="Include" />
+        <e p="Tap.cs" t="Include" />
         <e p="TapInputGesture.cs" t="Include" />
       </e>
       <e p="Library" t="ExcludeRecursive" />

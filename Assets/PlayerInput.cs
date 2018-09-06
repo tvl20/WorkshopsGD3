@@ -12,6 +12,27 @@ public class PlayerInput : MonoBehaviour
     private bool doubleTap = false;
     private float doubleTapCounter = 0;
 
+    // todo: pretty this up
+    public Tap GetInput()
+    {
+        if (Input.touchCount == 0)
+        {
+            return null;
+        }
+
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began)
+        {
+            tapOrigin = touch.position;
+        }
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            return new Tap(tapOrigin, touch.position, getTapType(tapOrigin, touch.position, deadzone));
+        }
+
+        return null;
+    }
+
     private void Update()
     {
         if (doubleTap)
@@ -26,36 +47,8 @@ public class PlayerInput : MonoBehaviour
                 doubleTap = false;
             }
         }
-
-        TapInputGesture gesture = GetInputGesture();
-        if (gesture != TapInputGesture.None)
-        {
-            Debug.Log(gesture);
-        }
     }
-
-    // todo: pretty this up
-    public TapInputGesture GetInputGesture()
-    {
-        if (Input.touchCount == 0)
-        {
-            return TapInputGesture.None;
-        }
-
-        Touch touch = Input.GetTouch(0);
-        if (touch.phase == TouchPhase.Began)
-        {
-            tapOrigin = touch.position;
-        }
-        else if (touch.phase == TouchPhase.Ended)
-        {
-            return tapDirection(tapOrigin, touch.position, deadzone);
-        }
-
-        return TapInputGesture.None;
-    }
-
-    private TapInputGesture tapDirection(Vector2 origin, Vector2 destination, float deadzone)
+    private TapInputGesture getTapType(Vector2 origin, Vector2 destination, float deadzone)
     {
         float deltaX = destination.x - origin.x;
         float deltaY = destination.y - origin.y;
